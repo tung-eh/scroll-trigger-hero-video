@@ -14,5 +14,5 @@ body {
 }
 
 h1 {
-  @apply font-hg text-[3rem] leading-[1.1];
+  @apply font-hg text-[2rem] lg:text-[3rem] leading-[1.1];
 }

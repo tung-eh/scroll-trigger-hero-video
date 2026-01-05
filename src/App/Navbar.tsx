@@ -8,8 +8,8 @@ const navLinks = [
 
 const Navbar = () => {
   return (
-    <nav className="fixed w-full grid grid-cols-3 items-center gap-8 py-6 px-8 z-10">
-      <div className="flex gap-12">
+    <nav className="fixed w-full grid lg:grid-cols-3 items-center gap-8 py-6 px-8 z-10">
+      <div className="hidden lg:flex gap-12">
         {navLinks.map(({ href, name }) => (
           <a
             href={href}
@@ -27,7 +27,7 @@ const Navbar = () => {
           <img src="/logo.png" className="w-6" /> Byewind
         </a>
       </div>
-      <div className="flex justify-end gap-6">
+      <div className="hidden lg:flex justify-end gap-6">
         <a href="#">
           <Button>Live Demo</Button>
         </a>

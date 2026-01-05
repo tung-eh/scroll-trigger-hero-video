@@ -18,14 +18,14 @@ const Hero = () => {
     <section className="relative w-full h-screen overflow-hidden">
       <canvas></canvas>
 
-      <div className="absolute left-0 top-0 h-[50vh] w-full text-foreground flex flex-col items-center justify-center gap-6 py-2">
+      <div className="absolute left-0 top-0 h-[50vh] w-full text-foreground flex flex-col items-center justify-center gap-6 py-2 px-8">
         <h1 className="text-center max-w-3xl">
           One unified workspace to build, test, and ship AI faster
         </h1>
         <p className="uppercase text-[0.8rem] font-medium opacity-35">
           Trusted by
         </p>
-        <div className="flex gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {clientLogos.map(({ src }) => (
             <div>
               <img src={src} className="h-7" />
