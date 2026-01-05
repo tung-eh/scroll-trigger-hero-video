@@ -12,7 +12,7 @@ const Button = ({
   return (
     <button
       className={twMerge(
-        'uppercase text-[0.8rem] font-medium text-foreground bg-background text-foreground py-3 px-6',
+        'uppercase text-[0.8rem] font-medium text-foreground bg-background text-foreground rounded py-3 px-6',
         variant === 'secondary' && 'bg-foreground text-background'
       )}
     >
