@@ -1,5 +1,15 @@
+import Navbar from './Navbar'
+import Hero from './Hero'
+import Outro from './Outro'
+
 function App() {
-  return <div className="text-indigo-500">Hello world</div>
+  return (
+    <main>
+      <Navbar />
+      <Hero />
+      <Outro />
+    </main>
+  )
 }
 
 export default App
