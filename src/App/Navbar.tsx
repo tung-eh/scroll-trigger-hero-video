@@ -8,7 +8,7 @@ const navLinks = [
 
 const Navbar = () => {
   return (
-    <nav className="fixed w-full grid grid-cols-3 items-center gap-8 py-6 px-8">
+    <nav className="fixed w-full grid grid-cols-3 items-center gap-8 py-6 px-8 z-10">
       <div className="flex gap-12">
         {navLinks.map(({ href, name }) => (
           <a
