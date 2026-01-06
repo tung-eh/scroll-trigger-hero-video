@@ -69,7 +69,7 @@ const Hero = () => {
         <p className="uppercase text-[0.8rem] font-medium opacity-35">
           Trusted by
         </p>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {clientLogos.map(({ src }) => (
             <div>
               <img src={src} className="h-7" />
