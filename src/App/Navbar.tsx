@@ -1,3 +1,7 @@
+import { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+
 import Button from 'src/components/Button'
 
 const navLinks = [
@@ -7,8 +11,24 @@ const navLinks = [
 ]
 
 const Navbar = () => {
+  const navRef = useRef<HTMLElement>(null)
+
+  useGSAP(() => {
+    gsap.to(navRef.current, {
+      opacity: 0,
+      scrollTrigger: {
+        start: 'top top',
+        end: `+=${window.innerHeight * 0.7}px`,
+        scrub: true,
+      },
+    })
+  })
+
   return (
-    <nav className="fixed w-full grid lg:grid-cols-3 items-center gap-8 py-6 px-8 z-10">
+    <nav
+      ref={navRef}
+      className="fixed w-full grid lg:grid-cols-3 items-center gap-8 py-6 px-8 z-10"
+    >
       <div className="hidden lg:flex gap-12">
         {navLinks.map(({ href, name }) => (
           <a
