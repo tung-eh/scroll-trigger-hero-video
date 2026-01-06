@@ -12,6 +12,7 @@ const Navbar = () => {
       <div className="hidden lg:flex gap-12">
         {navLinks.map(({ href, name }) => (
           <a
+            key={name}
             href={href}
             className="uppercase text-[0.8rem] font-medium text-foreground"
           >

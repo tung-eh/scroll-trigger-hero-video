@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react'
+import { ScrollTrigger } from 'gsap/all'
 
 const clientLogos = [
   {
@@ -20,6 +21,7 @@ const getFrameSrc = (index: number) =>
   `/frames/frame_${(index + 1).toString().padStart(4, '0')}.webp`
 
 const Hero = () => {
+  const sectionRef = useRef<HTMLElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -37,21 +39,43 @@ const Hero = () => {
     context.scale(pixelRatio, pixelRatio)
 
     const images: HTMLImageElement[] = []
+    let loadedCount = 0
 
-    const renderImage = () => {
+    const renderImage = (index: number) => {
       const canvasWidth = window.innerWidth
       const canvasHeight = window.innerHeight
       context.clearRect(0, 0, canvasWidth, canvasHeight)
 
-      const img = images[0]
+      const img = images[index]
 
       context.drawImage(img, 0, 0, canvasWidth, canvasHeight)
+    }
+
+    const setupScrollTrigger = () => {
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top top',
+        end: `+=${window.innerHeight * 7}px`,
+        pin: true,
+        pinSpacing: true,
+        scrub: 1,
+        onUpdate: (self) => {
+          const progress = self.progress
+          const animationProgress = Math.min(progress / 0.9, 1)
+          const targetFrame = Math.round(animationProgress * (frameCount - 1))
+          renderImage(targetFrame)
+        },
+      })
     }
 
     for (let i = 0; i < frameCount; i++) {
       const img = new Image()
       img.onload = () => {
-        renderImage()
+        loadedCount++
+        if (loadedCount === frameCount) {
+          setupScrollTrigger()
+          renderImage(0)
+        }
       }
       img.src = getFrameSrc(i)
       images.push(img)
@@ -59,7 +83,10 @@ const Hero = () => {
   }, [])
 
   return (
-    <section className="relative w-full h-screen overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="relative w-full h-screen overflow-hidden"
+    >
       <canvas ref={canvasRef} className="w-full h-full"></canvas>
 
       <div className="absolute left-0 top-0 h-[50vh] w-full text-foreground flex flex-col items-center justify-center gap-6 py-2 px-8">
@@ -71,7 +98,7 @@ const Hero = () => {
         </p>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {clientLogos.map(({ src }) => (
-            <div>
+            <div key={src}>
               <img src={src} className="h-7" />
             </div>
           ))}
