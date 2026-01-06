@@ -1,4 +1,6 @@
 import { useRef, useEffect } from 'react'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/all'
 
 const clientLogos = [
@@ -23,6 +25,7 @@ const getFrameSrc = (index: number) =>
 const Hero = () => {
   const sectionRef = useRef<HTMLElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -82,14 +85,36 @@ const Hero = () => {
     }
   }, [])
 
+  useGSAP(() => {
+    gsap.to(headerRef.current, {
+      z: -500,
+      scrollTrigger: {
+        start: 'top top',
+        end: `+=${(window.innerHeight * 7) / 4}px`,
+        scrub: true,
+      },
+    })
+    gsap.to(headerRef.current, {
+      opacity: 0,
+      scrollTrigger: {
+        start: `top+=${(window.innerHeight * 7) / 5}px top`,
+        end: `top+=${(window.innerHeight * 7) / 4}px`,
+        scrub: true,
+      },
+    })
+  })
+
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-screen overflow-hidden"
+      className="relative w-full h-screen overflow-hidden transform-3d perspective-[1000px]"
     >
       <canvas ref={canvasRef} className="w-full h-full"></canvas>
 
-      <div className="absolute left-0 top-0 h-[50vh] w-full text-foreground flex flex-col items-center justify-center gap-6 py-2 px-8">
+      <div
+        ref={headerRef}
+        className="absolute left-0 top-0 h-[50vh] w-full text-foreground flex flex-col items-center justify-center gap-6 py-2 px-8"
+      >
         <h1 className="text-center max-w-3xl">
           One unified workspace to build, test, and ship AI faster
         </h1>
