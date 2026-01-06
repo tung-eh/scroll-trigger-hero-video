@@ -26,6 +26,7 @@ const Hero = () => {
   const sectionRef = useRef<HTMLElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
+  const dashboardImgRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -76,8 +77,8 @@ const Hero = () => {
       img.onload = () => {
         loadedCount++
         if (loadedCount === frameCount) {
-          setupScrollTrigger()
           renderImage(0)
+          setupScrollTrigger()
         }
       }
       img.src = getFrameSrc(i)
@@ -99,6 +100,30 @@ const Hero = () => {
       scrollTrigger: {
         start: `top+=${(window.innerHeight * 7) / 5}px top`,
         end: `top+=${(window.innerHeight * 7) / 4}px`,
+        scrub: true,
+      },
+    })
+  })
+
+  useGSAP(() => {
+    gsap.set(dashboardImgRef.current, {
+      x: '-50%',
+      y: '-50%',
+      z: 1000,
+    })
+    gsap.to(dashboardImgRef.current, {
+      z: 0,
+      scrollTrigger: {
+        start: `top+=${window.innerHeight * 7 * 0.6}px top`,
+        end: `top+=${window.innerHeight * 7 * 0.9}px`,
+        scrub: true,
+      },
+    })
+    gsap.to(dashboardImgRef.current, {
+      opacity: 1,
+      scrollTrigger: {
+        start: `top+=${window.innerHeight * 7 * 0.6}px top`,
+        end: `top+=${window.innerHeight * 7 * 0.8}px`,
         scrub: true,
       },
     })
@@ -130,8 +155,11 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="absolute top-1/2 left-1/2 -translate-1/2 w-1/2 flex items-center justify-center">
-        <img src="/dashboard.png" className="opacity-0" />
+      <div
+        ref={dashboardImgRef}
+        className="absolute top-1/2 left-1/2 w-1/2 flex items-center justify-center opacity-0"
+      >
+        <img src="/dashboard.png" />
       </div>
     </section>
   )
