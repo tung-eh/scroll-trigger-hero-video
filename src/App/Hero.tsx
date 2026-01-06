@@ -1,3 +1,5 @@
+import { useRef, useEffect } from 'react'
+
 const clientLogos = [
   {
     src: '/client-logo-01.svg',
@@ -13,10 +15,52 @@ const clientLogos = [
   },
 ]
 
+const frameCount = 240
+const getFrameSrc = (index: number) =>
+  `/frames/frame_${(index + 1).toString().padStart(4, '0')}.webp`
+
 const Hero = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const context = canvas.getContext('2d')
+    if (!context) return
+
+    // set canvas size
+    const pixelRatio = window.devicePixelRatio || 1
+    canvas.width = window.innerWidth * pixelRatio
+    canvas.height = window.innerHeight * pixelRatio
+    canvas.style.width = window.innerWidth + 'px'
+    canvas.style.height = window.innerHeight + 'px'
+    context.scale(pixelRatio, pixelRatio)
+
+    const images: HTMLImageElement[] = []
+
+    const renderImage = () => {
+      const canvasWidth = window.innerWidth
+      const canvasHeight = window.innerHeight
+      context.clearRect(0, 0, canvasWidth, canvasHeight)
+
+      const img = images[0]
+
+      context.drawImage(img, 0, 0, canvasWidth, canvasHeight)
+    }
+
+    for (let i = 0; i < frameCount; i++) {
+      const img = new Image()
+      img.onload = () => {
+        renderImage()
+      }
+      img.src = getFrameSrc(i)
+      images.push(img)
+    }
+  }, [])
+
   return (
     <section className="relative w-full h-screen overflow-hidden">
-      <canvas></canvas>
+      <canvas ref={canvasRef} className="w-full h-full"></canvas>
 
       <div className="absolute left-0 top-0 h-[50vh] w-full text-foreground flex flex-col items-center justify-center gap-6 py-2 px-8">
         <h1 className="text-center max-w-3xl">
